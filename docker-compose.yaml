@@ -10,7 +10,7 @@ services:
     volumes:
       - signal-data:/home/.local/share/signal-cli
     ports:
-      - "127.0.0.1:8080:8080"
+      - "127.0.0.1:8085:8080"
     restart: unless-stopped
 
   pingo:

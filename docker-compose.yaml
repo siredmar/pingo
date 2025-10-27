@@ -1,0 +1,33 @@
+version: "3.9"
+services:
+  signal:
+    image: bbernhard/signal-cli-rest-api:latest
+    container_name: signal-api
+    environment:
+      - MODE=normal
+      # Optional: set a timezone if you like
+      - TZ=Europe/Berlin
+    volumes:
+      - signal-data:/home/.local/share/signal-cli
+    ports:
+      - "127.0.0.1:8080:8080"
+    restart: unless-stopped
+
+  pingo:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: pingo
+    depends_on:
+      - signal
+    environment:
+      - CONFIG=/config/config.yaml
+    volumes:
+      - ./config.yaml:/config/config.yaml:ro
+    cap_add:
+      - NET_RAW
+    restart: unless-stopped
+
+
+volumes:
+  signal-data:
